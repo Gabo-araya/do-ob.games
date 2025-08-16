@@ -1,0 +1,6 @@
+services:
+  games-hub:
+    build: .
+    ports:
+      - "5500:5500"
+    container_name: games-hub-container

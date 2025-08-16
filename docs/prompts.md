@@ -114,3 +114,7 @@ Comienza con la creación del juego.
 Genera instrucciones para el juego (en archivo md y en el juego)
 
 ---
+
+revisa la app flask y crea un landing page con accesos a cada juego.
+
+---

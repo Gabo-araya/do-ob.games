@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Hub // CYBERPUNK</title>
+    <link href="https://fonts.googleapis.com/css2?family=Turret+Road:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00ffff;
+            --secondary-color: #ff00ff;
+            --background-color: #0a0a0a;
+            --text-color: #e0e0e0;
+            --card-bg-color: #1a1a1a;
+            --border-color: #ff00ff;
+        }
+
+        body {
+            font-family: 'Turret Road', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 2rem;
+            background-image: linear-gradient(var(--secondary-color), transparent 1px), linear-gradient(90deg, var(--secondary-color), transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 1rem;
+            text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color);
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .game-card {
+            background-color: var(--card-bg-color);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
+            border-color: var(--primary-color);
+        }
+
+        .game-card h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 1.8rem;
+        }
+
+        .game-image-placeholder {
+            width: 100%;
+            height: 180px;
+            background-color: #000;
+            border: 1px dashed var(--primary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .game-description, .game-instructions {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        .game-instructions h3 {
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .play-button {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--background-color);
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 700;
+            text-align: center;
+            margin-top: auto;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .play-button:hover {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>GAME HUB // CYBERPUNK</h1>
+        </header>
+
+        <div class="game-grid">
+            <!-- Breakout -->
+            <div class="game-card">
+                <h2>Breakout</h2>
+                <div class="game-image-placeholder"><span>[IMG]</span></div>
+                <div class="game-description">
+                    <p>Breakout es un clásico juego de arcade en el que el jugador debe destruir una pared de ladrillos haciendo rebotar una bola en una paleta.</p>
+                </div>
+                <div class="game-instructions">
+                    <h3>Instrucciones</h3>
+                    <p>Usa las teclas de flecha izquierda y derecha para mover la paleta. Evita que la bola caiga por debajo de la paleta. Destruye todos los ladrillos para ganar.</p>
+                </div>
+                <a href="/breakout/index.html" class="play-button">JUGAR</a>
+            </div>
+
+            <!-- Flappy Bird -->
+            <div class="game-card">
+                <h2>Flappy Bird</h2>
+                <div class="game-image-placeholder"><span>[IMG]</span></div>
+                <div class="game-description">
+                    <p>Flappy Bird es un juego de arcade de desplazamiento lateral en el que el jugador controla un pájaro, intentando volar entre columnas de tuberías verdes sin golpearlas.</p>
+                </div>
+                <div class="game-instructions">
+                    <h3>Instrucciones</h3>
+                    <p>Presiona la barra espaciadora para hacer que el pájaro aletee hacia arriba. Navega a través de los huecos en las tuberías para sumar puntos. Si golpeas una tubería o el suelo, el juego termina.</p>
+                </div>
+                <a href="/flappy-bird/index.html" class="play-button">JUGAR</a>
+            </div>
+
+            <!-- Frogger -->
+            <div class="game-card">
+                <h2>Frogger</h2>
+                <div class="game-image-placeholder"><span>[IMG]</span></div>
+                <div class="game-description">
+                    <p>Frogger es un juego de arcade en el que el objetivo es dirigir a las ranas a sus hogares una por una, cruzando una carretera concurrida y un río peligroso.</p>
+                </div>
+                <div class="game-instructions">
+                    <h3>Instrucciones</h3>
+                    <p>Usa las teclas de flecha para mover la rana. Evita ser atropellado por los coches en la carretera. Usa troncos y tortugas para cruzar el río. Lleva a cinco ranas a casa para ganar.</p>
+                </div>
+                <a href="/frogger/index.html" class="play-button">JUGAR</a>
+            </div>
+
+            <!-- Memory Match -->
+            <div class="game-card">
+                <h2>Memory Match</h2>
+                <div class="game-image-placeholder"><span>[IMG]</span></div>
+                <div class="game-description">
+                    <p>Memory Match es un juego de cartas en el que todas las cartas se colocan boca abajo en una superficie y se voltean dos cartas en cada turno. El objetivo del juego es voltear pares de cartas iguales.</p>
+                </div>
+                <div class="game-instructions">
+                    <h3>Instrucciones</h3>
+                    <p>Haz clic en una carta para voltearla, luego haz clic en otra. Si las cartas coinciden, permanecen boca arriba. Si no, se vuelven a voltear. Encuentra todos los pares para ganar.</p>
+                </div>
+                <a href="/memory-match/index.html" class="play-button">JUGAR</a>
+            </div>
+
+            <!-- Pacman -->
+            <div class="game-card">
+                <h2>Pacman</h2>
+                <div class="game-image-placeholder"><span>[IMG]</span></div>
+                <div class="game-description">
+                    <p>Pac-Man es un juego de laberintos en el que el jugador controla al personaje titular, que debe comer todos los puntos dentro de un laberinto cerrado mientras evita a cuatro fantasmas de colores.</p>
+                </div>
+                <div class="game-instructions">
+                    <h3>Instrucciones</h3>
+                    <p>Usa las teclas de flecha para mover a Pac-Man. Come todos los puntos para completar el nivel. Come los puntos de poder para poder comerte a los fantasmas temporalmente.</p>
+                </div>
+                <a href="/pacman/index.html" class="play-button">JUGAR</a>
+            </div>
+
+            <!-- Pong -->
+            <div class="game-card">
+                <h2>Pong</h2>
+                <div class="game-image-placeholder"><span>[IMG]</span></div>
+                <div class="game-description">
+                    <p>Pong es uno de los primeros videojuegos de arcade. Es un juego de deportes de mesa que presenta un tenis de mesa bidimensional simple. Los jugadores usan paletas para golpear una bola de un lado a otro.</p>
+                </div>
+                <div class="game-instructions">
+                    <h3>Instrucciones</h3>
+                    <p>Jugador 1: Usa las teclas 'W' y 'S' para mover tu paleta. Jugador 2: Usa las teclas de flecha arriba y abajo. El primer jugador en alcanzar 10 puntos gana.</p>
+                </div>
+                <a href="/pong/index.html" class="play-button">JUGAR</a>
+            </div>
+
+            <!-- Snake -->
+            <div class="game-card">
+                <h2>Snake</h2>
+                <div class="game-image-placeholder"><span>[IMG]</span></div>
+                <div class="game-description">
+                    <p>Snake es un videojuego en el que el jugador maniobra una línea que crece en longitud, con la propia línea convirtiéndose en el principal obstáculo.</p>
+                </div>
+                <div class="game-instructions">
+                    <h3>Instrucciones</h3>
+                    <p>Usa las teclas de flecha para mover la serpiente. Come la comida para crecer más. No choques contra las paredes ni contra tu propia cola.</p>
+                </div>
+                <a href="/snake/index.html" class="play-button">JUGAR</a>
+            </div>
+
+            <!-- Space Invaders -->
+            <div class="game-card">
+                <h2>Space Invaders</h2>
+                <div class="game-image-placeholder"><span>[IMG]</span></div>
+                <div class="game-description">
+                    <p>Space Invaders es un juego de disparos arcade en el que el jugador controla un cañón láser moviéndolo horizontalmente por la parte inferior de la pantalla y disparando a los alienígenas que descienden.</p>
+                </div>
+                <div class="game-instructions">
+                    <h3>Instrucciones</h3>
+                    <p>Usa las teclas de flecha izquierda y derecha para mover tu nave. Presiona la barra espaciadora para disparar. Destruye a todos los invasores antes de que lleguen al fondo.</p>
+                </div>
+                <a href="/space-invaders/index.html" class="play-button">JUGAR</a>
+            </div>
+
+            <!-- Tetris -->
+            <div class="game-card">
+                <h2>Tetris</h2>
+                <div class="game-image-placeholder"><span>[IMG]</span></div>
+                <div class="game-description">
+                    <p>Tetris es un juego de rompecabezas de caída de bloques. El jugador debe rotar y mover las piezas que caen (tetrominós) para crear líneas horizontales completas sin huecos.</p>
+                </div>
+                <div class="game-instructions">
+                    <h3>Instrucciones</h3>
+                    <p>Usa las teclas de flecha para mover y rotar los bloques. Completa líneas para eliminarlas y ganar puntos. El juego termina si los bloques se apilan hasta la parte superior.</p>
+                </div>
+                <a href="/tetris/index.html" class="play-button">JUGAR</a>
+            </div>
+
+            <!-- Whack-a-Mole -->
+            <div class="game-card">
+                <h2>Whack-a-Mole</h2>
+                <div class="game-image-placeholder"><span>[IMG]</span></div>
+                <div class="game-description">
+                    <p>Whack-a-Mole es un popular juego de arcade. El objetivo es golpear a los topos que aparecen en los agujeros con un mazo para sumar puntos.</p>
+                </div>
+                <div class="game-instructions">
+                    <h3>Instrucciones</h3>
+                    <p>Usa el ratón para mover el mazo. Haz clic en los topos para golpearlos. ¡Sé rápido, solo aparecen por un corto tiempo!</p>
+                </div>
+                <a href="/whack-a-mole/index.html" class="play-button">JUGAR</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

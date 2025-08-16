@@ -4,15 +4,30 @@
 - Python 3.7+
 - Flask
 
-## Instalación
+### Paso 1: Clonar y Preparar
+
 ```bash
-cd server
-pip install -r requirements.txt
+# Clonar repositorio
+git clone https://github.com/Gabo-araya/do-ob.games.git
+cd do-ob.games
+
+# Verificar Python
+python3 --version  # Debe ser 3.10+
+
+# Crear entorno virtual
+python3 -m venv venv
+source venv/bin/activate
 ```
 
-O instalar manualmente:
+### Paso 2: Instalar Dependencias
+
 ```bash
-pip install flask
+# Actualizar pip
+pip install --upgrade pip
+
+# Instalar dependencias del proyecto
+pip install -r requirements.txt
+
 ```
 
 ## Lanzar el servidor
@@ -22,6 +37,42 @@ python app.py
 ```
 
 El servidor estará disponible en: http://localhost:5000
+
+## Despliegue con Podman
+
+Estas instrucciones son para desplegar la aplicación en un servidor Ubuntu con Podman.
+
+### 1. Instalar Podman
+
+```bash
+sudo apt-get update
+sudo apt-get -y install podman
+```
+
+### 2. Instalar Podman Compose
+
+`podman-compose` se puede instalar usando `pip`.
+
+```bash
+sudo apt-get -y install python3-pip
+pip install podman-compose
+```
+
+### 3. Construir y correr la aplicación
+
+Desde el directorio raíz del proyecto, donde se encuentra el archivo `compose.yaml`, ejecuta el siguiente comando:
+
+```bash
+podman-compose up -d
+```
+
+La aplicación estará disponible en el puerto 5500 de tu servidor.
+
+Para detener la aplicación, ejecuta:
+
+```bash
+podman-compose down
+```
 
 ## Endpoints disponibles
 

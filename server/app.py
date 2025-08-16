@@ -1,8 +1,8 @@
-from flask import Flask, send_from_directory, jsonify
+from flask import Flask, send_from_directory, jsonify, render_template
 import os
 import sqlite3
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates', static_folder='../')
 
 # Configuración de la base de datos
 DATABASE = 'analytics.db'
@@ -25,14 +25,13 @@ def init_db():
 @app.route('/')
 def index():
     """Página principal que lista todos los juegos"""
-    games = [d for d in os.listdir('.') if os.path.isdir(d) and d not in ['docs', 'server']]
-    return jsonify({"games": games})
+    return render_template('index.html')
 
-@app.route('/games/<game_name>')
+@app.route('/<path:game_name>/index.html')
 def serve_game(game_name):
     """Sirve un juego específico"""
     if os.path.exists(f'{game_name}/index.html'):
-        return send_from_directory(game_name, 'index.html')
+        return send_from_directory(f'../{game_name}', 'index.html')
     return jsonify({"error": "Game not found"}), 404
 
 @app.route('/analytics/event', methods=['POST'])
