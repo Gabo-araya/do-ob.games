@@ -1,23 +1,29 @@
-# Use an official Python runtime as a parent image
+# Usar una imagen base de Python
 FROM python:3.10-slim
 
-# Set the working directory in the container
+# Establecer el directorio de trabajo en el contenedor
 WORKDIR /app
 
-# Copy the requirements file into the container at /app
-COPY server/requirements.txt .
+# Copiar los archivos de la aplicación al contenedor
+# Copiamos el directorio del servidor y todos los directorios de los juegos
+COPY server/ /app/server/
+COPY breakout/ /app/breakout/
+COPY flappy-bird/ /app/flappy-bird/
+COPY frogger/ /app/frogger/
+COPY memory-match/ /app/memory-match/
+COPY pacman/ /app/pacman/
+COPY pong/ /app/pong/
+COPY snake/ /app/snake/
+COPY space-invaders/ /app/space-invaders/
+COPY tetris/ /app/tetris/
+COPY whack-a-mole/ /app/whack-a-mole/
+COPY analytics.db /app/analytics.db
 
-# Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+# Instalar las dependencias de Python
+RUN pip install --no-cache-dir -r server/requirements.txt
 
-# Copy the entire project directory into the container
-COPY . .
-
-# Make port 5500 available to the world outside this container
+# Exponer el puerto en el que se ejecuta la aplicación
 EXPOSE 5500
 
-# Define environment variable
-ENV FLASK_APP server/app.py
-
-# Run app.py when the container launches
-CMD ["python", "-m", "flask", "run", "--host=0.0.0.0", "--port=5500"]
+# Comando para ejecutar la aplicación
+CMD ["python", "server/app.py"]

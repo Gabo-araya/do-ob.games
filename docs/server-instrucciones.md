@@ -1,114 +1,128 @@
-# Instrucciones del Servidor
+# Guía de Despliegue en Servidor VPS con Podman
 
-## Requisitos
-- Python 3.7+
-- Flask
+Esta guía detalla los pasos para desplegar la aplicación de juegos en un servidor VPS de Hostinger (o similar) utilizando Podman como motor de contenedores.
 
-### Paso 1: Clonar y Preparar
+**Dominio de ejemplo:** `games.do-ob.cl`
 
-```bash
-# Clonar repositorio
-git clone https://github.com/Gabo-araya/do-ob.games.git
-cd do-ob.games
+## Paso 1: Configuración del Servidor VPS
 
-# Verificar Python
-python3 --version  # Debe ser 3.10+
+1.  **Accede a tu VPS:**
+    Conéctate a tu servidor a través de SSH.
+    ```bash
+    ssh usuario@tu_direccion_ip
+    ```
 
-# Crear entorno virtual
-python3 -m venv venv
-source venv/bin/activate
-```
+2.  **Actualiza tu sistema:**
+    ```bash
+    sudo dnf update -y  # Para AlmaLinux/CentOS/Fedora
+    # sudo apt update && sudo apt upgrade -y # Para Debian/Ubuntu
+    ```
 
-### Paso 2: Instalar Dependencias
+3.  **Instala las herramientas necesarias (Git y Podman):**
+    ```bash
+    sudo dnf install -y git podman
+    # sudo apt install -y git podman # Para Debian/Ubuntu
+    ```
+    
+4.  **Instala `podman-compose`:**
+    Esto facilitará la gestión del contenedor definido en `compose.yaml`.
+    ```bash
+    sudo dnf install -y python3-pip
+    pip3 install --user podman-compose
+    ```
+    Asegúrate de que `~/.local/bin` esté en tu `PATH`. Agrégalo a tu `.bashrc` o `.zshrc`:
+    ```bash
+    echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+    source ~/.bashrc
+    ```
 
-```bash
-# Actualizar pip
-pip install --upgrade pip
+## Paso 2: Configuración del DNS
 
-# Instalar dependencias del proyecto
-pip install -r requirements.txt
+En tu proveedor de dominio (donde registraste `do-ob.cl`), crea un registro **A** para el subdominio `games` que apunte a la dirección IP de tu servidor VPS.
 
-```
+- **Tipo:** A
+- **Nombre/Host:** games
+- **Valor/Apuntando a:** (La IP de tu VPS)
 
-## Lanzar el servidor
-```bash
-cd server
-python app.py
-```
+## Paso 3: Despliegue de la Aplicación
 
-El servidor estará disponible en: http://localhost:5000
+1.  **Clona el repositorio del proyecto:**
+    ```bash
+    git clone https://github.com/Gabo-araya/do-ob.games.git
+    cd do-ob.games
+    ```
 
-## Despliegue con Podman
+2.  **Construye la imagen y levanta el contenedor:**
+    Usa `podman-compose` para leer el archivo `compose.yaml` y gestionar el contenedor.
+    ```bash
+    podman-compose up -d --build
+    ```
+    - `--build`: Construye la imagen a partir del `Dockerfile` la primera vez.
+    - `-d`: Ejecuta el contenedor en modo "detached" (en segundo plano).
 
-Estas instrucciones son para desplegar la aplicación en un servidor Ubuntu con Podman.
+3.  **Verifica que el contenedor esté en ejecución:**
+    ```bash
+    podman ps
+    ```
+    Deberías ver un contenedor llamado `do-ob-games-container` en estado "Up". También puedes revisar los logs:
+    ```bash
+    podman logs do-ob-games-container
+    ```
 
-### 1. Instalar Podman
+En este punto, la aplicación ya está corriendo en el puerto `5500` de tu servidor. Sin embargo, no es accesible públicamente a través del dominio ni usa HTTPS. Para ello, necesitas un reverse proxy.
 
-```bash
-sudo apt-get update
-sudo apt-get -y install podman
-```
+## Paso 4: Configuración de un Reverse Proxy (Caddy)
 
-### 2. Instalar Podman Compose
+Usaremos **Caddy** porque es extremadamente fácil de configurar y gestiona automáticamente los certificados SSL/TLS de Let's Encrypt.
 
-`podman-compose` se puede instalar usando `pip`.
+1.  **Instala Caddy:**
+    Sigue las instrucciones oficiales para tu sistema operativo en [caddyserver.com](https://caddyserver.com/docs/install). Para AlmaLinux 8:
+    ```bash
+    sudo dnf install 'dnf-command(copr)'
+    sudo dnf copr enable @caddy/caddy
+    sudo dnf install caddy
+    ```
 
-```bash
-sudo apt-get -y install python3-pip
-pip install podman-compose
-```
+2.  **Configura Caddy:**
+    Edita el archivo de configuración de Caddy:
+    ```bash
+    sudo nano /etc/caddy/Caddyfile
+    ```
+    Reemplaza todo el contenido con lo siguiente, sustituyendo `games.do-ob.cl` por tu dominio:
+    ```
+    games.do-ob.cl {
+        # Habilita la compresión para un mejor rendimiento
+        encode gzip
 
-### 3. Construir y correr la aplicación
+        # Redirige el tráfico del dominio al puerto donde corre la app
+        reverse_proxy localhost:5500
+    }
+    ```
 
-Desde el directorio raíz del proyecto, donde se encuentra el archivo `compose.yaml`, ejecuta el siguiente comando:
+3.  **Inicia y habilita el servicio de Caddy:**
+    ```bash
+    sudo systemctl enable --now caddy
+    ```
+    Caddy se iniciará automáticamente, obtendrá un certificado SSL para `games.do-ob.cl` y redirigirá todo el tráfico de forma segura a tu aplicación en el contenedor.
 
-```bash
-podman-compose up -d
-```
+¡Listo! Ahora deberías poder acceder a tu aplicación en `https://games.do-ob.cl`.
 
-La aplicación estará disponible en el puerto 5500 de tu servidor.
+## Mantenimiento y Actualizaciones
 
-Para detener la aplicación, ejecuta:
+Para actualizar la aplicación con los últimos cambios del repositorio de Git:
 
-```bash
-podman-compose down
-```
+1.  **Detén el contenedor actual:**
+    ```bash
+    cd do-ob.games
+    podman-compose down
+    ```
 
-## Endpoints disponibles
+2.  **Actualiza el código fuente:**
+    ```bash
+    git pull origin main  # O la rama que corresponda
+    ```
 
-### GET /
-Lista todos los juegos disponibles
-```json
-{
-  "games": ["snake", "tetris", "pong", ...]
-}
-```
-
-### GET /games/<game_name>
-Sirve el archivo HTML del juego especificado
-
-### POST /analytics/event
-Endpoint para tracking de eventos de juego
-
-## Base de datos
-- Se crea automáticamente `analytics.db` en el directorio server
-- Tablas: `game_events` y `game_stats`
-
-## Build de juegos
-Para empaquetar todos los juegos en archivos HTML únicos:
-```bash
-cd server
-python build.py
-```
-
-Los archivos empaquetados se guardan en el directorio `dist/`
-
-## Estructura de archivos
-```
-server/
-├── app.py              # Servidor Flask principal
-├── database.py         # Manejo de base de datos SQLite
-├── build.py            # Script para empaquetar juegos
-├── requirements.txt    # Dependencias Python
-└── analytics.db        # Base de datos (se crea automáticamente)
-```
+3.  **Vuelve a construir y levantar el servicio:**
+    ```bash
+    podman-compose up -d --build
+    ```

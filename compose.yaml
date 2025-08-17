@@ -1,6 +1,10 @@
 services:
-  games-hub:
+  games-app:
     build: .
+    image: do-ob-games
+    container_name: do-ob-games-container
+    restart: unless-stopped
     ports:
       - "5500:5500"
-    container_name: games-hub-container
+    volumes:
+      - ./analytics.db:/app/analytics.db
